@@ -5,11 +5,14 @@ import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { Button } from "./ui/button";
 import logo from "../images/pixAura_logo.png";
+import { useSelector } from "react-redux";
 
 const Signup = () => {
   const [input, setInput] = useState({ username: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const {user} = useSelector(store=>store.auth);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -45,13 +48,18 @@ const Signup = () => {
     }
   };
 
-  useEffect(() => {
+  
     alert(
       "1. Please sign up with your correct email because there is no verification step yet.\n" +
         "2. Please remember your password because there is no forgotten password feature yet.\n" +
         "3. If any problem occurs, please send an email to: 89543633a@gmail.com (Ajay)."
     );
-  }, []);
+  
+    useEffect(()=>{
+    if(user){
+        navigate("/");
+    }
+},[])
 
   return (
     <div className="flex items-center w-screen  h-auto justify-center">

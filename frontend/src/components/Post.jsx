@@ -42,7 +42,7 @@ const Post = ({ post }) => {
     try {
       const action = liked ? "dislike" : "like";
       const res = await axios.get(
-        `http://localhost:8000/api/v1/post/${post._id}/${action}`,
+        `https://pixaura.onrender.com/api/v1/post/${post._id}/${action}`,
         { withCredentials: true }
       );
       console.log(res.data);
@@ -75,7 +75,7 @@ const Post = ({ post }) => {
 
   const commentHandler=  async()=>{
     try{
-      const res = await axios.post(`http://localhost:8000/api/v1/post/${post._id}/comment`, {text}, {
+      const res = await axios.post(`https://pixaura.onrender.com/api/v1/post/${post._id}/comment`, {text}, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true
       });
@@ -101,7 +101,7 @@ const Post = ({ post }) => {
   const deletePostHandler = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:8000/api/v1/post/delete/${post?._id}`,
+        `https://pixaura.onrender.com/api/v1/post/delete/${post?._id}`,
         { withCredentials: true }
       );
 

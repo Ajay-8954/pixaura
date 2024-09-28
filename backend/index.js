@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corOptions= {
-    origin : 'http://localhost:5173',
+    origin : process.env.URL,
     credentials: true
 }
 

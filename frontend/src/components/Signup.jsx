@@ -54,7 +54,6 @@ const Signup = () => {
     "1. Please sign up with your correct email because there is no verification step yet.\n" +
       "2. Please remember your password because there is no forgotten password feature yet.\n" +
       "3. If any problem occurs, please send an email to: 89543633a@gmail.com (Ajay)."
-    "4. please after signup ...you have to login again , if not working"
   );
 },[])
   

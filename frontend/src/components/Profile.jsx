@@ -5,8 +5,14 @@ import useGetUserProfile from "@/hooks/useGetUserProfile";
 import { useSelector } from "react-redux";
 import { Button } from "./ui/button";
 import { Heart, MessageCircle } from "lucide-react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setFollowing } from "@/redux/userSlice";
+
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  
   const params = useParams();
   const userId = params.id;
   useGetUserProfile(userId);
@@ -19,9 +25,11 @@ const Profile = () => {
   //check to profile is of loggeduser or not
   const isLoggedInUserProfile = user?.id ===userProfile?._id;
 
-  //follow h ya nhi
-  const isFollowing = false;
+   // State for follow/unfollow
+  //  const [isFollowing, setIsFollowing] = useState(false);
+  const isFollowing = useSelector((state) => state.user.following[userId] || false);
 
+  
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -30,6 +38,42 @@ const Profile = () => {
 
   const displayedPost =
     activeTab === "posts" ? userProfile?.posts : userProfile?.bookmarks;
+
+
+
+
+
+    //follow- unfollow logic
+
+    
+    const handleFollowToggle = async () => {
+      try {
+        console.log("123");
+        console.log(user.token);
+
+
+        const response = await axios.post(
+          `https://pixaura.onrender.com/api/v1/user/followorunfollow/${userId}`, 
+        {},
+        {
+          withCredentials:true
+        }
+        
+        );
+
+        if (response.data.success) {
+          // Toggle the follow state
+          dispatch(setFollowing({ userId, isFollowing: !isFollowing }));
+          useGetUserProfile(userId);
+        }
+        console.log(response.data); // Log response if needed
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    
+    
 
   return (
     <div className="flex max-w-5xl justify-center mx-auto py-8">
@@ -76,27 +120,15 @@ const Profile = () => {
                     Ad Tools
                   </Button>
                 </div>
-              ) : isFollowing ? (
-                <>
-                  <Button
-                    variant="secondary"
-                    className="bg-[#0095F6] hover:bg-[#3192d2] text-white border border-gray-300 px-4 py-1 rounded-md"
-                  >
-                    Unfollow
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    className="bg-[#0095F6] hover:bg-[#3192d2] text-white border border-gray-300 px-4 py-1 rounded-md"
-                  >
-                    Message
-                  </Button>
-                </>
               ) : (
                 <Button
                   variant="secondary"
-                  className="bg-[#0095F6] hover:bg-[#3192d2] text-white border border-gray-300 px-4 py-1 rounded-md"
+                  onClick={handleFollowToggle}
+                  className={`${
+                    isFollowing ? "bg-red-500" : "bg-[#0095F6]"
+                  } hover:bg-opacity-75 text-white border border-gray-300 px-4 py-1 rounded-md`}
                 >
-                  Follow
+                  {isFollowing ? "Unfollow" : "Follow"}
                 </Button>
               )}
 
@@ -119,7 +151,7 @@ const Profile = () => {
               </p>
               <p>
                 <span className="font-semibold">
-                  {userProfile?.followers.length}
+                  {userProfile?.following.length}
                 </span>
                 Following
               </p>

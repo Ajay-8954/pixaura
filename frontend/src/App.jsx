@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import MainLayout from "./components/MainLayout";
 import Profile from "./components/Profile";
 import Signup from "./components/Signup";
+import SearchUser from "./components/SearchUser";
 
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 

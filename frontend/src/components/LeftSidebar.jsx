@@ -57,6 +57,9 @@ const LeftSidebar = () => {
     else if (textType==="Messages"){
       navigate('/chat');
     }
+      else if(textType==="Search"){
+      navigate('/search');
+    }
   };
 
   const sidebarItems = [

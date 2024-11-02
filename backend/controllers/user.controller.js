@@ -236,3 +236,21 @@ export const followOrUnfollow = async (req, res) =>{
         console.log(error);
     }
 }
+
+export const searchUser = async (req, res) => {
+    const { searchTerm } = req.params; // Extract searchTerm from route parameters
+  
+    try {
+      // Use a regular expression for case-insensitive search
+      const users = await User.find({ username: { $regex: searchTerm, $options: 'i' } }); // Find users by partial match
+  
+      if (users.length > 0) {
+        res.json({ users, success: true }); // Return all matched users
+      } else {
+        res.status(404).json({ message: 'No users found' }); // Adjusted message for no results
+      }
+    } catch (error) {
+      console.error('Error searching users:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };

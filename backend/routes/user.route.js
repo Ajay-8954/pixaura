@@ -1,6 +1,6 @@
 import express from 'express';
 import isAuthenticated from '../middlewares/isAuthenticated.js';
-import {editProfile,login,logout, register,getSuggestedUsers, getProfile, followOrUnfollow } from '../controllers/user.controller.js';
+import {editProfile,login,logout, register,getSuggestedUsers, getProfile, followOrUnfollow, searchUser } from '../controllers/user.controller.js';
 import upload from '../middlewares/multer.js';
 const router= express.Router();
 

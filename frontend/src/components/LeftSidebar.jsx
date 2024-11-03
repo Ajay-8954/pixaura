@@ -90,7 +90,7 @@ const LeftSidebar = () => {
     {
       icon: (
         <Avatar className="w-6 h-6">
-          <AvatarImage src={user?.profilePicture} />
+          <AvatarImage  className="rounded-full" src={user?.profilePicture} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       ),

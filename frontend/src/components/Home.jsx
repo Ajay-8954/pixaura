@@ -16,7 +16,11 @@ const Home = () => {
         <Feed/>
         <Outlet/>
       </div>
+      
+     <div className="hidden md:block">
       <RightSidebar/>
+      </div>
+      
     </div>
   )
 }

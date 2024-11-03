@@ -9,27 +9,27 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setFollowing } from "@/redux/userSlice";
 
-
 const Profile = () => {
   const dispatch = useDispatch();
-  
+
   const params = useParams();
   const userId = params.id;
   useGetUserProfile(userId);
 
   const [activeTab, setActiveTab] = useState("posts");
 
-  const { userProfile , user} = useSelector(store => store.auth);
+  const { userProfile, user } = useSelector((store) => store.auth);
   console.log(userProfile);
 
   //check to profile is of loggeduser or not
-  const isLoggedInUserProfile = user?.id ===userProfile?._id;
+  const isLoggedInUserProfile = user?.id === userProfile?._id;
 
-   // State for follow/unfollow
+  // State for follow/unfollow
   //  const [isFollowing, setIsFollowing] = useState(false);
-  const isFollowing = useSelector((state) => state.user.following[userId] || false);
+  const isFollowing = useSelector(
+    (state) => state.user.following[userId] || false
+  );
 
-  
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -39,83 +39,74 @@ const Profile = () => {
   const displayedPost =
     activeTab === "posts" ? userProfile?.posts : userProfile?.bookmarks;
 
+  //follow- unfollow logic
 
+  const handleFollowToggle = async () => {
+    try {
+      console.log("123");
+      console.log(user.token);
 
-
-
-    //follow- unfollow logic
-
-    
-    const handleFollowToggle = async () => {
-      try {
-        console.log("123");
-        console.log(user.token);
-
-
-        const response = await axios.post(
-          `https://pixaura.onrender.com/api/v1/user/followorunfollow/${userId}`, 
+      const response = await axios.post(
+        `https://pixaura.onrender.com/api/v1/user/followorunfollow/${userId}`,
         {},
         {
-          withCredentials:true
+          withCredentials: true,
         }
-        
-        );
+      );
 
-        if (response.data.success) {
-          // Toggle the follow state
-          dispatch(setFollowing({ userId, isFollowing: !isFollowing }));
-          useGetUserProfile(userId);
-        }
-        console.log(response.data); // Log response if needed
-      } catch (error) {
-        console.log(error);
+      if (response.data.success) {
+        // Toggle the follow state
+        dispatch(setFollowing({ userId, isFollowing: !isFollowing }));
+        useGetUserProfile(userId);
       }
-    };
-
-    
-    
+      console.log(response.data); // Log response if needed
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <div className="flex max-w-5xl justify-center mx-auto py-8">
-      <div className="flex flex-col gap-12 p-6">
-        <div className="grid grid-cols-2 items-center gap-8">
+    <div className="flex flex-col max-w-5xl justify-center mx-auto py-8">
+      <div className="flex flex-col gap-12 p-4 sm:p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-8">
           {/* Profile Picture Section */}
           <section className="flex justify-center items-center">
-            <Avatar className="h-36 w-36 rounded-full border border-gray-300">
+            <Avatar className="h-24 w-24 sm:h-36 sm:w-36 rounded-full border border-gray-300">
               <AvatarImage
                 src={userProfile?.profilePicture}
                 alt="Profile_Picture"
               />
-              <AvatarFallback >CN</AvatarFallback>
+              <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </section>
 
           {/* User Info and Buttons */}
           <section>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 ">
               {/* Username */}
-              <h1 className="text-2xl font-semibold">
+              <h1 className="text-xl sm:text-2xl font-semibold text-center">
                 {userProfile?.username}
               </h1>
 
               {isLoggedInUserProfile ? (
-                <div className="flex gap-3">
-                  <Link to="/account/edit"> <Button
-                    variant="secondary"
-                    className="hover:bg-gray-100 border border-gray-300 px-4 py-1 rounded-md"
-                  >
-                    Edit Profile
-                  </Button>
+                <div className="flex flex-col  gap-3">
+                  <Link to="/account/edit">
+                    <Button
+                      variant="secondary"
+                      className="hover:bg-gray-100 w-full border border-gray-300 px-3 py-1 rounded-md text-sm sm:text-base"
+                    >
+                      Edit Profile
+                    </Button>
                   </Link>
                   <Button
                     variant="secondary"
-                    className="hover:bg-gray-100 border border-gray-300 px-4 py-1 rounded-md"
+                    className="hover:bg-gray-100 border border-gray-300 px-3 py-1 rounded-md text-sm sm:text-base"
                   >
                     View Archive
                   </Button>
                   <Button
                     variant="secondary"
-                    className="hover:bg-gray-100 border border-gray-300 px-4 py-1 rounded-md"
+                    className="hover:bg-gray-100 border border-gray-300 px-3 py-1 rounded-md text-sm sm:text-base"
                   >
                     Ad Tools
                   </Button>
@@ -126,18 +117,15 @@ const Profile = () => {
                   onClick={handleFollowToggle}
                   className={`${
                     isFollowing ? "bg-red-500" : "bg-[#0095F6]"
-                  } hover:bg-opacity-75 text-white border border-gray-300 px-4 py-1 rounded-md`}
+                  } hover:bg-opacity-75 text-white border border-gray-300 px-3 py-1 rounded-md text-sm sm:text-base`}
                 >
                   {isFollowing ? "Unfollow" : "Follow"}
                 </Button>
               )}
-
-              {/* Buttons Group */}
             </div>
 
-            <div className="flex items-center gap-4 mt-5">
+            <div className="flex items-center gap-4 mt-5 text-sm sm:text-base">
               <p>
-                {" "}
                 <span className="font-semibold">
                   {userProfile?.posts.length}
                 </span>
@@ -156,9 +144,12 @@ const Profile = () => {
                 Following
               </p>
             </div>
-            <div className='flex flex-col gap-1'>
-                <span className='font-semibold'>{userProfile?.bio || 'bio here...'}</span>
-                </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="font-semibold">
+                {userProfile?.bio || "bio here..."}
+              </span>
+            </div>
           </section>
         </div>
 
@@ -202,12 +193,12 @@ const Profile = () => {
                   <div className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="text-white font-semibold text-lg">
                       <Button>
-                        <Heart/>
+                        <Heart />
                         <span>{post?.likes?.length}</span>
                       </Button>
 
                       <Button>
-                        <MessageCircle/>
+                        <MessageCircle />
                         <span>{post?.comment?.length}</span>
                       </Button>
                     </span>

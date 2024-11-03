@@ -102,19 +102,21 @@ const LeftSidebar = () => {
     },
   ];
 
-  return (
-    <div className="fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen">
-      <div className="flex flex-col">  
-          <div className="flex justify-center">
+
+   return (
+    <>
+      {/* Sidebar for medium and larger screens */}
+      <div className="hidden md:block fixed top-0 z-30 left-0 w-[16%] h-screen px-4 border-r border-gray-300 bg-white transition-colors duration-300 overflow-y-auto">
+        <div className="flex flex-col">
+          <div className="flex justify-center mt-4 mb-6">
             <img
               src={logo}
               alt="Logo"
               className="w-48 h-auto md:w-64 lg:w-72"
-          />
-        </div>
-        <div>
-          {sidebarItems.map((item, index) => {
-            return (
+            />
+          </div>
+          <div>
+            {sidebarItems.map((item, index) => (
               <div
                 onClick={() => sidebarHandler(item.text)}
                 key={index}
@@ -124,14 +126,33 @@ const LeftSidebar = () => {
                 {/* Only show text on screens medium and above */}
                 <span className="hidden md:block">{item.text}</span>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
 
-      <CreatePost open={open} setOpen={setOpen}/>
-    </div>
+      {/* Bottom navigation bar for mobile screens */}
+      <div className="fixed z-50 bottom-0 left-0 right-0 bg-white shadow-lg flex justify-around p-2 md:hidden">
+        {sidebarItems
+          .filter(item => item.text !== "Explore" && item.text !== "Notifications") // Exclude unneeded items for mobile
+          .map((item, index) => (
+            <div
+              onClick={() => sidebarHandler(item.text)}
+              key={index}
+              className="flex flex-col items-center cursor-pointer text-gray-600 hover:text-purple-600"
+            >
+              {item.icon}
+              {/* Hide labels in the bottom navigation bar for mobile */}
+              <span className="hidden">{item.text}</span>
+            </div>
+          ))}
+      </div>
+
+      <CreatePost open={open} setOpen={setOpen} />
+    </>
   );
 };
 
 export default LeftSidebar;
+
+ 

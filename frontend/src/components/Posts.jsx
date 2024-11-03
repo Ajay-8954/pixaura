@@ -7,7 +7,7 @@ const Posts = () => {
   const { posts } = useSelector(store => store.post);
 
   return (
-    <div>
+    <div className='mr-10'>
       {
         posts && posts.length > 0 ? (
           posts.map((post) => <Post key={post._id} post={post} />)

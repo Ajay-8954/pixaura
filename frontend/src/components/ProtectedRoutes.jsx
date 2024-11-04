@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 const ProtectedRoutes = ({children}) => {
     const {user}= useSelector(store=>store.auth);
@@ -12,7 +13,9 @@ const ProtectedRoutes = ({children}) => {
         }
     },[])
 
-  return (<>{children}</>)
+  return (<>
+  <Header/>
+  {children}</>)
 }
 
 export default ProtectedRoutes

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from "./ui/button";
+import { Search } from "lucide-react";
 
 const SearchUser = () => {
   const [searchTerm, setSearchTerm] = useState("");
